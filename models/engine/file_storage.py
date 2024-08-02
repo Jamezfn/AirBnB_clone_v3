@@ -75,7 +75,7 @@ class FileStorage:
             return None
 
         all_cls = models.storage.all(cls)
-        for values in all_cls.values():
+        for value in all_cls.values():
             if value.id == id:
                 return value
 
@@ -87,8 +87,6 @@ class FileStorage:
         If cls is None, count all objects.
         If cls is provided, count only objects of that class.
         """
-        from models import storage, classes
-
         all_class = classes.values()
 
         if not cls:

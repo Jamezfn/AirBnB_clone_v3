@@ -5,7 +5,11 @@ Contains the TestFileStorageDocs classes
 
 from datetime import datetime
 import inspect
-import models
+import json
+import os
+import pep8
+import unittest
+from models import storage
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -14,10 +18,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import json
-import os
-import pep8
-import unittest
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -82,7 +82,7 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
-        save = FileStorage._FileStorage__objects
+        save = storage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
         test_dict = {}
         for key, value in classes.items():
@@ -103,7 +103,7 @@ class TestFileStorage(unittest.TestCase):
             instance = value()
             instance_key = instance.__class__.__name__ + "." + instance.id
             new_dict[instance_key] = instance
-        save = FileStorage._FileStorage__objects
+        save = storage._FileStorage__objects
         FileStorage._FileStorage__objects = new_dict
         storage.save()
         FileStorage._FileStorage__objects = save
