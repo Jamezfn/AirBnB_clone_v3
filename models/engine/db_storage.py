@@ -98,7 +98,7 @@ class DBStorage:
         if not cls:
             count = 0
             for clas in all_class:
-                count +=(model.storage.all(cls).values())
+                count += len(self.all(cls).values())
         else:
             count = len(models.storage.all(cls).values())
 
