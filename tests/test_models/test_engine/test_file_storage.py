@@ -9,7 +9,7 @@ import json
 import os
 import pep8
 import unittest
-from models import storage
+import models
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -82,7 +82,7 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
-        save = storage._FileStorage__objects
+        save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
         test_dict = {}
         for key, value in classes.items():
@@ -103,7 +103,7 @@ class TestFileStorage(unittest.TestCase):
             instance = value()
             instance_key = instance.__class__.__name__ + "." + instance.id
             new_dict[instance_key] = instance
-        save = storage._FileStorage__objects
+        save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = new_dict
         storage.save()
         FileStorage._FileStorage__objects = save
@@ -118,28 +118,13 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """Tests method for obtaining an instance from FileStorage"""
         storage = FileStorage()
-
-        dic = {"name": "Vecindad"}
-        instance = State(**dic)
-        storage.new(instance)
-        storage.save()
-        storage = FileStorage()
-        get_instance = storage.get(State, instance.id)
-        self.assertEqual(get_inastance, instance)
+        user = User(name="User1")
+        user.save()
+        self.assertEqual(user, storage.get(User, user.id))
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_count(self):
         """Tests countmethod file storage"""
         storage = FileStorage()
-        dic = {"name": "Vecindad"}
-        state = State(**dic)
-        storage.new(state)
-        dic = {"name": "Mexico"}
-        city = City(**dic)
-        storage.new(city)
-        storage.save()
-        c = storage.count()
-        self.assertEqual(len(storage.all()), c)
-
-if __name__ == "__main__":
-    unittest.main()
+        nobjs = len(storage._FileStorage__objects)
+        self.assertEqual(nobjs, storage.count())
