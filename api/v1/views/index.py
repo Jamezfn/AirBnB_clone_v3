@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
-Return status of the page
-"""
+"""Return status of the page"""
+
 
 from flask import jsonify
 from api.v1.views import app_views
@@ -13,7 +12,8 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-@app_views.route('/status', methods=['GET'])
+
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
 def get_status():
     """
     Retrieve response status.
@@ -21,24 +21,20 @@ def get_status():
     and responds with a JSON object indicating that the API
     is running
     """
-    return jsonify({
-        'status': 'OK'
-    })
+    return jsonify({'status': 'OK'})
 
-@app_views.route('/stats', methods=['GET'])
+
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def get_stats():
     """
     Retrieve the number of each object by type.
     This fx is associated with the /sta
     """
-    try:
-        return jsonify({
-            "amenities": storage.count(Amenity),
-            "cities": storage.count(City),
-            "places": storage.count(Place),
-            "reviews": storage.count(Review),
-            "states": storage.count(State),
-            "users": storage.count(User),
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({
+        "amenities": storage.count(Amenity),
+        "cities": storage.count(City),
+        "places": storage.count(Place),
+        "reviews": storage.count(Review),
+        "states": storage.count(State),
+        "users": storage.count(User),
+    })
