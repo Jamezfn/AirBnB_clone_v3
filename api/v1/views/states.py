@@ -36,14 +36,11 @@ def delete_state(state_id):
     Deletes a State object.
     Handles DELETE /api/v1/state/<state_id>
     """
-    try:
         state = storage.get(State, state_id)
-        if state is None:
-            abort(404, description='Not found')
-        storage.delete(state)
-        storage.save()
-    except Exception:
-        abort(404, description= 'Not found')
+    if state is None:
+        abort(404, description='Not found')
+    storage.delete(state)
+    storage.save()
     return make_response(jsonify({}), 200)
 
 
@@ -58,6 +55,7 @@ def post_state(state_id):
         abort(400, description="Not a JSON")
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
+    
     instance = State(**data)
     storage.new(instance)
     storage.save()
