@@ -34,10 +34,12 @@ def get_state(state_id):
 def delete_state(state_id):
     """
     Deletes a State object.
-    Handles DELETE /api/vi/state/<state_id>
+    Handles DELETE /api/v1/state/<state_id>
     """
     try:
         state = storage.get(State, state_id)
+        if state is None:
+            abort(404, description='Not found')
         storage.delete(state)
         storage.save()
     except Exception:
@@ -76,7 +78,7 @@ def put_state(state_id):
     if not state:
         abort(404)
 
-    ignore = ['id', 'created_at', 'update_at']
+    ignore = ['id', 'created_at', 'updated_at']
 
     for key, value in data.items():
         if key not in ignore:
