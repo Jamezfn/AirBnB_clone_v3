@@ -82,6 +82,7 @@ class DBStorage:
                 cls = classes.get(cls)
             objs = self.all()
             key = '{}.{}'.format(cls.__name__, id)
+            print(f"Retrieving key: {key}")
             return objs.get(key)
         return None
 
