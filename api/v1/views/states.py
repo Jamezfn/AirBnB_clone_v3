@@ -16,7 +16,7 @@ def get_state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    return Response(json.dumps(statei.to_dict, indent=4), mimetype='application/json')
+    return Response(json.dumps(state.to_dict(), indent=4), mimetype='application/json')
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
